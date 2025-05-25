@@ -1,0 +1,331 @@
+/* src/components/Header.module.css */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  background-color: transparent; /* Mặc định trong suốt */
+}
+
+.scrolled {
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.notHomePage {
+  background-color: white; /* Nền trắng cho các trang không phải trang chủ */
+}
+
+.scrolled .logoText,
+.scrolled .menu :global(.ant-menu-item) a,
+.notHomePage .logoText,
+.notHomePage .menu :global(.ant-menu-item) a {
+  color: #333 !important;
+  transition: color 0.3s;
+}
+
+.headerContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.logoText {
+  display: inline-block;
+  font-size: var(--heading-font-size);
+  font-family: var(--font-family);
+  text-decoration: none;
+  font-weight: 700;
+  color: white;
+  margin: 0;
+  transition: color 0.3s;
+}
+
+.scrolled .logoText:hover,
+.notHomePage .logoText:hover {
+  color: var(--primary-color);
+}
+
+.desktopMenu {
+  display: flex;
+  align-items: center;
+}
+
+.menu {
+  background: transparent;
+  border: none;
+  margin-right: 20px;
+}
+
+.scrolled .menu,
+.notHomePage .menu {
+  color: #333;
+}
+
+.menu :global(.ant-menu-item) {
+  padding: 0 15px;
+  margin: 0 5px;
+  border-bottom: none !important;
+}
+
+.menu :global(.ant-menu-item) a {
+  color: white !important;
+  font-size: var(--text-font-size);
+  font-family: var(--font-family);
+  font-weight: 500;
+  transition: color 0.3s, transform 0.3s;
+  padding: 5px 0;
+}
+
+.menu :global(.ant-menu-item-selected) a,
+.menu :global(.ant-menu-item:hover) a {
+  color: var(--primary-color) !important;
+  transform: translateY(-2px);
+}
+
+.scrolled .menu :global(.ant-menu-item:hover) a,
+.notHomePage .menu :global(.ant-menu-item:hover) a {
+  color: var(--primary-color) !important;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+}
+
+.searchButton {
+  background: transparent;
+  border: none;
+  color: white;
+  margin-right: 15px;
+  font-size: 1.2rem;
+  transition: color 0.3s, transform 0.3s;
+}
+
+.searchButton:hover {
+  color: var(--primary-color);
+  transform: scale(1.1);
+}
+
+.scrolled .searchButton,
+.notHomePage .searchButton {
+  color: #333;
+}
+
+.contactButton {
+  background: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  padding: 0 20px;
+  height: 40px;
+  font-weight: 500;
+  font-family: var(--font-family);
+  transition: all 0.3s;
+}
+
+.contactButton:hover {
+  background: var(--secondary-color);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.languageDropdown {
+  position: relative;
+  margin-left: 15px;
+  z-index: 100;
+}
+
+.dropdownTrigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
+  border-radius: 30px;
+  padding: 6px 16px;
+  height: 38px;
+  min-width: 120px;
+  font-size: var(--text-font-size);
+  font-family: var(--font-family);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s;
+  backdrop-filter: blur(5px);
+}
+
+.scrolled .dropdownTrigger,
+.notHomePage .dropdownTrigger {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  color: #333;
+}
+
+.dropdownTrigger:hover {
+  border-color: var(--primary-color);
+  background: rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+.dropdownFlag {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdownArrow {
+  font-size: 0.8rem;
+  margin-left: 6px;
+  transition: transform 0.3s;
+}
+
+.dropdownOpen .dropdownArrow {
+  transform: rotate(180deg);
+}
+
+.scrolled .dropdownArrow,
+.notHomePage .dropdownArrow {
+  color: #333;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: calc(100% + 5px);
+  right: 0;
+  min-width: 140px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(-10px);
+  animation: dropdownFadeIn 0.2s forwards;
+}
+
+@keyframes dropdownFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdownItem {
+  display: flex;
+  align-items: center;
+  padding: 10px 16px;
+  font-size: var(--text-font-size);
+  font-family: var(--font-family);
+  color: #333;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.dropdownItem:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dropdownItem:hover {
+  background: rgba(0, 0, 0, 0.1);
+  color: var(--primary-color);
+}
+
+.dropdownItem.active {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--primary-color);
+  font-weight: 500;
+}
+
+.dropdownItem .flag {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.mobileMenuButton {
+  display: none;
+}
+
+.menuButton {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+}
+
+.scrolled .menuButton,
+.notHomePage .menuButton {
+  color: #333;
+}
+
+.mobileDrawer :global(.ant-drawer-content) {
+  background-color: #fff;
+}
+
+.drawerMenu {
+  border: none;
+  margin-bottom: 20px;
+}
+
+.drawerMenu :global(.ant-menu-item) {
+  margin: 10px 0;
+}
+
+.drawerContactBtn {
+  background: var(--primary-color);
+  border: none;
+  margin-top: 20px;
+  font-family: var(--font-family);
+}
+
+@media (max-width: 768px) {
+  .headerContainer {
+    padding: 15px 20px;
+  }
+
+  .desktopMenu {
+    display: none;
+  }
+
+  .mobileMenuButton {
+    display: block;
+  }
+
+  .mobileDrawer .languageDropdown {
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .mobileDrawer .dropdownTrigger {
+    width: 100%;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.05);
+  }
+
+  .mobileDrawer .dropdownMenu {
+    width: 100%;
+  }
+}
