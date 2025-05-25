@@ -125,7 +125,7 @@ export const testimonials = [
     name: "David Williams",
     company: "TechStart Inc.",
     quote:
-      "XP OutSource transformed our digital presence with a cutting-edge web application that significantly improved our customer engagement.",
+      "TXP OutSource transformed our digital presence with a cutting-edge web application that significantly improved our customer engagement.",
     image: "/images/testimonials/david.jpg",
   },
   {
@@ -133,7 +133,7 @@ export const testimonials = [
     name: "Lisa Brown",
     company: "Global Solutions Ltd.",
     quote:
-      "The mobile application developed by XP OutSource helped us reach new market segments and increase our revenue by 30%.",
+      "The mobile application developed by TXP OutSource helped us reach new market segments and increase our revenue by 30%.",
     image: "/images/testimonials/lisa.jpg",
   },
   {

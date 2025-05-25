@@ -2,7 +2,7 @@ import { ConfigProvider } from "antd";
 import "./globals.css";
 
 export const metadata = {
-  title: "XP OutSource",
+  title: "TXP OutSource",
   description: "Technology outsourcing solutions",
 };
 

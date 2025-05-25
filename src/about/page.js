@@ -21,7 +21,7 @@ export default function About() {
             </Col>
             <Col xs={24} md={12}>
               <div className={styles.aboutContent}>
-                <h2>About XP OutSource</h2>
+                <h2>About TXP OutSource</h2>
                 <p className={styles.aboutDescription}>{about.mission}</p>
                 <div className={styles.aboutFeatures}>
                   <div className={styles.featureItem}>
