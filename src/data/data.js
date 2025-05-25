@@ -75,7 +75,7 @@ export const services = [
 
 export const about = {
   mission:
-    "XP OutSource is committed to delivering cutting-edge technology solutions that drive innovation and business growth. We combine technical expertise with industry insight to help organizations navigate the digital landscape and achieve their strategic objectives.",
+    "TXP is committed to delivering cutting-edge technology solutions that drive innovation and business growth. We combine technical expertise with industry insight to help organizations navigate the digital landscape and achieve their strategic objectives.",
   vision:
     "To be the leading technology partner for businesses seeking to harness the power of digital transformation across global markets.",
   values: [
@@ -85,7 +85,7 @@ export const about = {
     "Integrity and transparency in all relationships",
   ],
   history:
-    "Founded in 2015, XP OutSource has grown from a small team of passionate developers to a comprehensive technology partner serving clients worldwide. Our journey has been marked by continuous learning, adaptation to emerging technologies, and a relentless focus on delivering value.",
+    "Founded in 2015, TXP has grown from a small team of passionate developers to a comprehensive technology partner serving clients worldwide. Our journey has been marked by continuous learning, adaptation to emerging technologies, and a relentless focus on delivering value.",
 };
 
 export const team = [

@@ -14,8 +14,8 @@ export default function BannerCarousel({ locale, banners, isLoading }) {
   const getTranslation = (banner) => {
     if (!banner || !banner.translations || !Array.isArray(banner.translations)) {
       return {
-        title: "No Title",
-        description: "No Description",
+        title: "Computer Vision & WiFi Research Team",
+        description: "Computer Vision & WiFi Research Team",
         buttonText: "Learn More",
         buttonLink: "#",
       };
@@ -23,8 +23,8 @@ export default function BannerCarousel({ locale, banners, isLoading }) {
     return (
       banner.translations.find((trans) => trans.language === finalLocale) ||
       banner.translations[0] || {
-        title: "No Title",
-        description: "No Description",
+        title: "Computer Vision & WiFi Research Team",
+        description: "Computer Vision & WiFi Research Team",
         buttonText: "Learn More",
         buttonLink: "#",
       }
