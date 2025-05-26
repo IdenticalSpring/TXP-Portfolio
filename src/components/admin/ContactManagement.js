@@ -21,6 +21,7 @@ import {
 const { Option } = Select;
 
 export default function ContactManagement() {
+  // States và hooks giữ nguyên
   const locale = useLocale();
   const t = useTranslations("ContactManagement");
   const router = useRouter();
@@ -39,13 +40,51 @@ export default function ContactManagement() {
   const [translationsLoading, setTranslationsLoading] = useState(false);
 
   // Hàm xử lý lỗi Unauthorized
-  const handleUnauthorized = () => {
+  const handleUnauthorized = useCallback(() => {
     logoutAdmin();
     message.error("Phiên đăng nhập đã hết hạn, vui lòng đăng nhập lại");
     router.push(`/${locale}/admin/login`);
-  };
+  }, [locale, router]);
 
-  // Hàm tải danh sách contact
+  // Hàm tiện ích xử lý lỗi
+  const handleErrorResponse = useCallback(
+    (error, defaultMessage = "Đã xảy ra lỗi") => {
+      console.error("Error:", error);
+
+      // Kiểm tra nếu error có response từ axios
+      if (error.response && error.response.data) {
+        const errorData = error.response.data;
+        if (errorData.statusCode === 401) {
+          handleUnauthorized();
+          return { handled: true };
+        }
+        return { message: errorData.message || defaultMessage };
+      }
+
+      // Kiểm tra nếu error.message có thể là JSON
+      if (typeof error.message === "string") {
+        try {
+          // Chỉ parse khi có khả năng là JSON (bắt đầu bằng '{')
+          if (error.message.trim().startsWith("{")) {
+            const errorData = JSON.parse(error.message);
+            if (errorData.statusCode === 401) {
+              handleUnauthorized();
+              return { handled: true };
+            }
+            return { message: errorData.message || defaultMessage };
+          }
+        } catch (parseError) {
+          // Lỗi parse JSON - không cần xử lý
+        }
+      }
+
+      // Trả về message gốc
+      return { message: error.message || defaultMessage };
+    },
+    [handleUnauthorized]
+  );
+
+  // Hàm tải danh sách contact - đã sửa
   const loadContacts = useCallback(async () => {
     setLoading(true);
     try {
@@ -53,29 +92,24 @@ export default function ContactManagement() {
       console.log("Loaded contacts:", data);
       setContacts(data);
     } catch (error) {
-      console.error("Error fetching contacts:", error);
-      const errorMessage = error.message;
-      try {
-        const errorData = JSON.parse(errorMessage);
-        if (errorData.statusCode === 401) {
-          handleUnauthorized();
-          return;
-        }
-      } catch (parseError) {
-        console.error("Error parsing error message:", parseError);
+      const result = handleErrorResponse(
+        error,
+        "Không thể tải danh sách contact"
+      );
+      if (!result.handled) {
+        message.error(`Không thể tải danh sách contact: ${result.message}`);
       }
-      message.error(`Không thể tải danh sách contact: ${error.message}`);
     } finally {
       setLoading(false);
     }
-  }, [locale, router]);
+  }, [locale, handleErrorResponse]);
 
   // Tải danh sách contact khi component mount hoặc locale thay đổi
   useEffect(() => {
     loadContacts();
   }, [loadContacts]);
 
-  // Hàm tải danh sách translation của một contact
+  // Hàm tải danh sách translation của một contact - đã sửa
   const loadContactTranslations = useCallback(
     async (contactId) => {
       if (!contactId) return;
@@ -95,34 +129,29 @@ export default function ContactManagement() {
         );
         setTranslations(translations);
       } catch (error) {
-        console.error("Error fetching contact translations:", error);
-        const errorMessage = error.message;
-        try {
-          const errorData = JSON.parse(errorMessage);
-          if (errorData.statusCode === 401) {
-            handleUnauthorized();
-            return;
-          }
-        } catch (parseError) {
-          console.error("Error parsing error message:", parseError);
+        const result = handleErrorResponse(
+          error,
+          "Không thể tải danh sách bản dịch"
+        );
+        if (!result.handled) {
+          message.error(`Không thể tải danh sách bản dịch: ${result.message}`);
         }
-        message.error(`Không thể tải danh sách bản dịch: ${error.message}`);
         setTranslations([]);
       } finally {
         setTranslationsLoading(false);
       }
     },
-    [locale, router]
+    [locale, handleErrorResponse]
   );
 
-  // Cấu hình cột cho bảng Contact
+  // Các columns giữ nguyên
   const contactColumns = [
     { title: "ID", dataIndex: "id", key: "id" },
     { title: "Phone", dataIndex: "phone", key: "phone" },
     { title: "Email", dataIndex: "mail", key: "mail" },
   ];
 
-  // Cấu hình cột cho bảng Translation
+  // Các columns khác giữ nguyên
   const translationColumns = [
     { title: "Language", dataIndex: "language", key: "language" },
     { title: "Address", dataIndex: "address", key: "address" },
@@ -165,7 +194,7 @@ export default function ContactManagement() {
     },
   ];
 
-  // Cấu hình trường cho form Contact
+  // Các fields khác giữ nguyên
   const contactFields = [
     {
       name: "phone",
@@ -182,7 +211,6 @@ export default function ContactManagement() {
     },
   ];
 
-  // Cấu hình trường cho form Translation
   const translationFields = [
     {
       name: "language",
@@ -222,115 +250,74 @@ export default function ContactManagement() {
     },
   ];
 
-  // Xử lý thêm contact mới
-  const handleAddContact = () => {
-    setEditingContact(null);
-    contactForm.resetFields();
-    setIsContactModalVisible(true);
-  };
-
-  // Xử lý chỉnh sửa contact
-  const handleEditContact = (contact) => {
-    setEditingContact(contact);
-    contactForm.setFieldsValue({
-      phone: contact.phone,
-      mail: contact.mail,
-    });
-    setIsContactModalVisible(true);
-  };
-
-  // Xử lý xóa contact với xác nhận
-  const handleDeleteContact = (id) => {
-    Modal.confirm({
-      title: "Xác nhận xóa",
-      content:
-        "Bạn có chắc chắn muốn xóa contact này? Tất cả các bản dịch của contact này cũng sẽ bị xóa.",
-      onOk: async () => {
-        try {
-          await deleteContact(locale, id);
-          setContacts(contacts.filter((contact) => contact.id !== id));
-          message.success("Xóa contact thành công");
-
-          if (selectedContact?.id === id) {
-            setShowTranslations(false);
-            setSelectedContact(null);
-          }
-        } catch (error) {
-          console.error("Error deleting contact:", error);
-          const errorMessage = error.message;
+  // Xử lý xóa contact với xác nhận - đã sửa
+  const handleDeleteContact = useCallback(
+    (id) => {
+      Modal.confirm({
+        title: "Xác nhận xóa",
+        content:
+          "Bạn có chắc chắn muốn xóa contact này? Tất cả các bản dịch của contact này cũng sẽ bị xóa.",
+        onOk: async () => {
           try {
-            const errorData = JSON.parse(errorMessage);
-            if (errorData.statusCode === 401) {
-              handleUnauthorized();
-              return;
+            await deleteContact(locale, id);
+            setContacts(contacts.filter((contact) => contact.id !== id));
+            message.success("Xóa contact thành công");
+
+            if (selectedContact?.id === id) {
+              setShowTranslations(false);
+              setSelectedContact(null);
             }
-          } catch (parseError) {
-            console.error("Error parsing error message:", parseError);
+          } catch (error) {
+            const result = handleErrorResponse(error, "Không thể xóa contact");
+            if (!result.handled) {
+              message.error(`Không thể xóa contact: ${result.message}`);
+            }
           }
-          message.error(`Không thể xóa contact: ${error.message}`);
-        }
-      },
-    });
-  };
+        },
+      });
+    },
+    [locale, contacts, selectedContact, handleErrorResponse]
+  );
 
-  // Xử lý quản lý translations
-  const handleManageTranslations = (contact) => {
-    setSelectedContact(contact);
-    setShowTranslations(true);
-    loadContactTranslations(contact.id);
-  };
-
-  // Xử lý thêm translation mới
-  const handleAddTranslation = () => {
-    setEditingTranslation(null);
-    translationForm.setFieldsValue({
-      language: undefined,
-      address: "",
-      slug: "",
-      metaDescription: "",
-      keywords: "",
-    });
-    setIsTranslationModalVisible(true);
-  };
-
-  // Xử lý xóa translation với xác nhận
-  const handleDeleteTranslation = (translationLanguage) => {
-    Modal.confirm({
-      title: "Xác nhận xóa",
-      content: "Bạn có chắc chắn muốn xóa bản dịch này?",
-      onOk: async () => {
-        try {
-          await deleteContactTranslation(
-            locale,
-            selectedContact.id,
-            translationLanguage
-          );
-          setTranslations(
-            translations.filter((t) => t.language !== translationLanguage)
-          );
-          message.success("Xóa bản dịch thành công");
-          if (selectedContact?.id) {
-            await loadContactTranslations(selectedContact.id);
-          }
-        } catch (error) {
-          console.error("Error deleting translation:", error);
-          const errorMessage = error.message;
+  // Các hàm xử lý khác - đã sửa
+  const handleDeleteTranslation = useCallback(
+    (translationLanguage) => {
+      Modal.confirm({
+        title: "Xác nhận xóa",
+        content: "Bạn có chắc chắn muốn xóa bản dịch này?",
+        onOk: async () => {
           try {
-            const errorData = JSON.parse(errorMessage);
-            if (errorData.statusCode === 401) {
-              handleUnauthorized();
-              return;
+            await deleteContactTranslation(
+              locale,
+              selectedContact.id,
+              translationLanguage
+            );
+            setTranslations(
+              translations.filter((t) => t.language !== translationLanguage)
+            );
+            message.success("Xóa bản dịch thành công");
+            if (selectedContact?.id) {
+              await loadContactTranslations(selectedContact.id);
             }
-          } catch (parseError) {
-            console.error("Error parsing error message:", parseError);
+          } catch (error) {
+            const result = handleErrorResponse(error, "Không thể xóa bản dịch");
+            if (!result.handled) {
+              message.error(`Không thể xóa bản dịch: ${result.message}`);
+            }
           }
-          message.error(`Không thể xóa bản dịch: ${error.message}`);
-        }
-      },
-    });
-  };
+        },
+      });
+    },
+    [
+      locale,
+      selectedContact,
+      translations,
+      loadContactTranslations,
+      handleErrorResponse,
+    ]
+  );
 
-  // Xử lý lưu contact (thêm hoặc cập nhật)
+  // Xử lý lưu contact (thêm hoặc cập nhật) - đã sửa
   const handleContactModalOk = async () => {
     try {
       const values = await contactForm.validateFields();
@@ -362,29 +349,24 @@ export default function ContactManagement() {
       setIsContactModalVisible(false);
       contactForm.resetFields();
     } catch (error) {
-      console.error("Error saving contact:", error);
-      const errorMessage = error.message;
-      try {
-        const errorData = JSON.parse(errorMessage);
-        if (errorData.statusCode === 401) {
-          handleUnauthorized();
-          return;
-        }
-      } catch (parseError) {
-        console.error("Error parsing error message:", parseError);
+      const result = handleErrorResponse(error, "Lưu contact thất bại");
+      if (!result.handled) {
+        message.error(`Lưu contact thất bại: ${result.message}`);
       }
-      message.error(`Lưu contact thất bại: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
 
-  // Xử lý lưu translation (thêm hoặc cập nhật)
+  // Xử lý lưu translation (thêm hoặc cập nhật) - đã sửa
   const handleTranslationModalOk = async () => {
     try {
       const values = await translationForm.validateFields();
+
+      // Sử dụng validation của form thay vì throw Error
       if (!values.language) {
-        throw new Error("Language is required");
+        message.error("Language is required");
+        return;
       }
 
       setTranslationsLoading(true);
@@ -423,7 +405,8 @@ export default function ContactManagement() {
           "Response translations is not an array:",
           updatedContact.translations
         );
-        throw new Error("Dữ liệu bản dịch từ server không hợp lệ");
+        message.error("Dữ liệu bản dịch từ server không hợp lệ");
+        return;
       }
 
       setTranslations(updatedContact.translations);
@@ -441,31 +424,55 @@ export default function ContactManagement() {
       setIsTranslationModalVisible(false);
       translationForm.resetFields();
     } catch (error) {
-      console.error("Error saving translation:", error);
-      const errorMessage = error.message;
-      try {
-        const errorData = JSON.parse(errorMessage);
-        if (errorData.statusCode === 401) {
-          handleUnauthorized();
-          return;
-        }
-      } catch (parseError) {
-        console.error("Error parsing error message:", parseError);
+      const result = handleErrorResponse(error, "Lưu bản dịch thất bại");
+      if (!result.handled) {
+        message.error(`Lưu bản dịch thất bại: ${result.message}`);
       }
-      message.error(`Lưu bản dịch thất bại: ${error.message}`);
     } finally {
       setTranslationsLoading(false);
     }
   };
 
-  // Xử lý quay lại danh sách contact
+  // Các hàm còn lại giữ nguyên
+  const handleAddContact = () => {
+    setEditingContact(null);
+    contactForm.resetFields();
+    setIsContactModalVisible(true);
+  };
+
+  const handleEditContact = (contact) => {
+    setEditingContact(contact);
+    contactForm.setFieldsValue({
+      phone: contact.phone,
+      mail: contact.mail,
+    });
+    setIsContactModalVisible(true);
+  };
+
+  const handleManageTranslations = (contact) => {
+    setSelectedContact(contact);
+    setShowTranslations(true);
+    loadContactTranslations(contact.id);
+  };
+
+  const handleAddTranslation = () => {
+    setEditingTranslation(null);
+    translationForm.setFieldsValue({
+      language: undefined,
+      address: "",
+      slug: "",
+      metaDescription: "",
+      keywords: "",
+    });
+    setIsTranslationModalVisible(true);
+  };
+
   const handleBackToContacts = () => {
     setShowTranslations(false);
     setSelectedContact(null);
     setTranslations([]);
   };
 
-  // Cấu hình actions cho bảng Contact
   const contactActions = {
     title: "Actions",
     key: "actions",
@@ -494,6 +501,7 @@ export default function ContactManagement() {
 
   const contactColumnsWithActions = [...contactColumns, contactActions];
 
+  // Return phần UI giữ nguyên
   return (
     <div className={styles.container}>
       {!showTranslations ? (

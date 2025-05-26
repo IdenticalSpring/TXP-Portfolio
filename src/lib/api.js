@@ -1,4 +1,4 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8001";
 
 // Hàm kiểm tra token có hợp lệ không (dựa trên thời gian hết hạn)
 const isTokenExpired = (token) => {
