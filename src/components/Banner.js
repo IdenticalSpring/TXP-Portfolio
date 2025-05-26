@@ -15,7 +15,7 @@ export default function BannerCarousel({ locale, banners, isLoading }) {
     if (!banner || !banner.translations || !Array.isArray(banner.translations)) {
       return {
         title: "Computer Vision & WiFi Research Team",
-        description: "Computer Vision & WiFi Research Team",
+        description: "We combine computer vision and wireless sensing to develop intelligent, real-time systems for smart environments, security, and human activity recognition.",
         buttonText: "Learn More",
         buttonLink: "#",
       };
@@ -24,7 +24,7 @@ export default function BannerCarousel({ locale, banners, isLoading }) {
       banner.translations.find((trans) => trans.language === finalLocale) ||
       banner.translations[0] || {
         title: "Computer Vision & WiFi Research Team",
-        description: "Computer Vision & WiFi Research Team",
+        description: "We combine computer vision and wireless sensing to develop intelligent, real-time systems for smart environments, security, and human activity recognition.",
         buttonText: "Learn More",
         buttonLink: "#",
       }
