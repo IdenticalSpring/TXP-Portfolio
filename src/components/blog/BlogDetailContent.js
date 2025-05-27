@@ -39,7 +39,7 @@ export default async function BlogDetailContent({ locale, slug }) {
             <img
               src={blog.image}
               alt={blog.altText || translation.title}
-              style={{ maxHeight: 400, objectFit: "cover", borderRadius: "8px 8px 0 0" }}
+              style={{ maxHeight: 1000, objectFit: "cover", borderRadius: "8px 8px 0 0" }}
             />
           )
         }
