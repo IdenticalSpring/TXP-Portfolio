@@ -32,7 +32,7 @@
   "ctaTitle": "Sẵn sàng chuyển đổi doanh nghiệp của bạn?",
   "ctaDescription": "Liên hệ ngay hôm nay để thảo luận về nhu cầu và giải pháp công nghệ",
   "contactUs": "Liên hệ chúng tôi",
-  "blogSectionTitle": "Blog của chúng tôi",
+  "blogSectionTitle": "Thành viên cốt lõi",
   "blogSectionDescription": "Khám phá những thông tin và cập nhật mới nhất về công nghệ và đổi mới",
   "readMore": "Đọc thêm",
   "noBlogsAvailable": "Hiện tại không có blog nào.",
@@ -121,5 +121,9 @@
   "textFontSize": "Cỡ chữ nội dung",
   "save": "Lưu cấu hình",
   "statistics": "Thống kê",
-  "StatisticsManagement": "Quản lý thống kê"
+  "StatisticsManagement": "Quản lý thống kê",
+  "ContactManagement": "Quản lý liên hệ",
+  "Images": "Hình ảnh",
+  "Member": "Thành viên",
+  "aboutImageAlt": "Mô tả hình ảnh về trang"
 }
