@@ -24,7 +24,9 @@ export default function BlogList({ locale }) {
       setBlogs(response.data || []);
       setTotalBlogs(response.total || 0);
     } catch (error) {
-      setError(t("loadError") || "Failed to load blogs. Please try again later.");
+      setError(
+        t("loadError") || "Failed to load blogs. Please try again later."
+      );
       setBlogs([]);
       setTotalBlogs(0);
     } finally {
@@ -47,7 +49,8 @@ export default function BlogList({ locale }) {
     const blogSection = document.getElementById("blog");
     if (blogSection) {
       const headerHeight = document.querySelector(".header")?.offsetHeight || 0;
-      const elementPosition = blogSection.getBoundingClientRect().top + window.pageYOffset;
+      const elementPosition =
+        blogSection.getBoundingClientRect().top + window.pageYOffset;
       window.scrollTo({
         top: elementPosition - headerHeight,
         behavior: "smooth",
@@ -88,7 +91,12 @@ export default function BlogList({ locale }) {
         </Button>
         {startPage > 1 && (
           <>
-            <Button onClick={() => handlePageChange(1)} className={styles.paginationButton}>1</Button>
+            <Button
+              onClick={() => handlePageChange(1)}
+              className={styles.paginationButton}
+            >
+              1
+            </Button>
             {startPage > 2 && <span className={styles.ellipsis}>...</span>}
           </>
         )}
@@ -96,15 +104,24 @@ export default function BlogList({ locale }) {
           <Button
             key={page}
             onClick={() => handlePageChange(page)}
-            className={`${styles.paginationButton} ${currentPage === page ? styles.active : ""}`}
+            className={`${styles.paginationButton} ${
+              currentPage === page ? styles.active : ""
+            }`}
           >
             {page}
           </Button>
         ))}
         {endPage < totalPages && (
           <>
-            {endPage < totalPages - 1 && <span className={styles.ellipsis}>...</span>}
-            <Button onClick={() => handlePageChange(totalPages)} className={styles.paginationButton}>{totalPages}</Button>
+            {endPage < totalPages - 1 && (
+              <span className={styles.ellipsis}>...</span>
+            )}
+            <Button
+              onClick={() => handlePageChange(totalPages)}
+              className={styles.paginationButton}
+            >
+              {totalPages}
+            </Button>
           </>
         )}
         <Button
@@ -124,7 +141,7 @@ export default function BlogList({ locale }) {
     <section id="blog" className={styles.servicesSection}>
       <div className={styles.sectionContainer}>
         <div className={styles.sectionHeader}>
-          <h2>{t("blogSectionTitle") || "Our Blogs"}</h2>
+          <h2>{t("blogSectionTitle") || "Core Members"}</h2>
           <p>
             {t("blogSectionDescription") ||
               "Discover our latest insights and updates on technology and innovation"}
@@ -173,7 +190,9 @@ export default function BlogList({ locale }) {
           <>
             <Row gutter={[32, 32]}>
               {blogs
-                .filter((blog) => blog.translations && blog.translations.length > 0)
+                .filter(
+                  (blog) => blog.translations && blog.translations.length > 0
+                )
                 .map((blog) => {
                   const translation =
                     blog.translations.find((t) => t.language === locale) ||
@@ -201,7 +220,8 @@ export default function BlogList({ locale }) {
                           {translation.metaDescription ||
                             (translation.content
                               ? translation.content.slice(0, 100) + "..."
-                              : t("noDescription") || "No description available.")}
+                              : t("noDescription") ||
+                                "No description available.")}
                         </p>
                         <Link href={`/${locale}/blog/${blog.slug}`}>
                           <Button type="link" className={styles.learnMoreBtn}>
