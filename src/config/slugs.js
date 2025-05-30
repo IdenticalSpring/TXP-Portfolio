@@ -7,13 +7,12 @@ export const SLUGS_CONFIG = {
       isMainBanner: false,
       titleKey: "contactCtaBannerTitle", 
     },
-    // Có thể thêm các banner khác, ví dụ:
-    // {
-    //   slug: "home-hero-banner",
-    //   key: "homeHeroBanner",
-    //   isMainBanner: true,
-    //   titleKey: "homeHeroBannerTitle",
-    // },
+    {
+      slug: "home-hero-banner",
+      key: "homeHeroBanner",
+      isMainBanner: true,
+      titleKey: "homeHeroBannerTitle",
+    },
   ],
   contacts: [
     {
