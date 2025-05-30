@@ -205,8 +205,16 @@ export default function MemberManagement() {
               setIsTranslationModalVisible(true);
               translationForm.setFieldsValue({
                 ...record,
+                language:
+                  record.language && ["vi", "en"].includes(record.language)
+                    ? record.language
+                    : "vi", // Đặt mặc định là "vi" nếu không hợp lệ
                 keywords: record.keywords.join(", "),
               });
+              console.log(
+                "Form values after setFieldsValue (edit):",
+                translationForm.getFieldsValue()
+              );
             }}
           >
             Edit
@@ -265,6 +273,7 @@ export default function MemberManagement() {
       label: "Language",
       rules: [{ required: true, message: "Vui lòng chọn ngôn ngữ" }],
       type: "select",
+      initialValue: "vi",
       options: [
         { value: "vi", label: "Tiếng Việt" },
         { value: "en", label: "English" },
@@ -365,15 +374,12 @@ export default function MemberManagement() {
   // Xử lý thêm translation mới
   const handleAddTranslation = () => {
     setEditingTranslation(null);
-    translationForm.setFieldsValue({
-      language: undefined,
-      name: "",
-      metaTitle: "",
-      metaDescription: "",
-      keywords: "",
-      description: "",
-    });
+    translationForm.resetFields();
     setIsTranslationModalVisible(true);
+    console.log(
+      "Form values after reset (add):",
+      translationForm.getFieldsValue()
+    );
   };
 
   // Xử lý xóa translation với xác nhận
@@ -470,10 +476,7 @@ export default function MemberManagement() {
   const handleTranslationModalOk = async () => {
     try {
       const values = await translationForm.validateFields();
-      if (!values.language) {
-        message.error("Language is required");
-        return;
-      }
+      console.log("Form values on submit:", values);
 
       setTranslationsLoading(true);
 
