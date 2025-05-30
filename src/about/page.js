@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { about } from "@/data/data";
 import styles from "./page.module.css";
-import styles from "./loading.module.css";
 
 import { FaLaptopCode, FaDatabase, FaProjectDiagram } from "react-icons/fa";
 import Link from "next/link";
