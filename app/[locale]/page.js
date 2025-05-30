@@ -110,7 +110,6 @@ export default function Home() {
     <div className={styles.container}>
       <Header />
       <BannerCarousel locale={locale} banners={mainBanners} isLoading={isLoading} />
-      <BlogList locale={locale} />
 
       <section id="about" className={styles.aboutSection}>
         <div className={styles.sectionContainer}>
@@ -198,6 +197,8 @@ export default function Home() {
         </div>
       </section>
       <MemberList locale={locale} />
+      <BlogList locale={locale} />
+
       <section id="contact" className={styles.ctaSection}>
         {contactBanner && !isLoading && (
           <div

@@ -143,7 +143,6 @@ export default function MemberList({ locale }) {
     );
   };
 
-  // Separate core and regular members
   const coreMembers = members.filter(
     (member) =>
       member.core &&

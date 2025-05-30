@@ -54,6 +54,7 @@
   padding: 20px 0;
   -webkit-overflow-scrolling: touch;
   position: relative;
+  overflow-x: visible;
 }
 
 .blogContainer::-webkit-scrollbar {
@@ -61,7 +62,7 @@
 }
 
 .serviceCard {
-  min-width: 300px;
+  width: 24%;
   height: 300px;
   background: white;
   border-radius: 12px;
