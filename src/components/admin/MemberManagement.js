@@ -209,7 +209,7 @@ export default function MemberManagement() {
                   record.language && ["vi", "en"].includes(record.language)
                     ? record.language
                     : "vi", // Đặt mặc định là "vi" nếu không hợp lệ
-                keywords: record.keywords.join(", "),
+                keywords: record.keywords?.join(", ") || "",
               });
               console.log(
                 "Form values after setFieldsValue (edit):",
@@ -273,7 +273,7 @@ export default function MemberManagement() {
       label: "Language",
       rules: [{ required: true, message: "Vui lòng chọn ngôn ngữ" }],
       type: "select",
-      initialValue: "vi",
+      initialValue: "vi", // Đặt giá trị mặc định là "vi"
       options: [
         { value: "vi", label: "Tiếng Việt" },
         { value: "en", label: "English" },
@@ -425,7 +425,7 @@ export default function MemberManagement() {
       const values = await memberForm.validateFields();
       setLoading(true);
 
-      const memberData = {
+      let memberData = {
         image: values.image,
         slug: values.slug,
         isActive: values.isActive,
@@ -435,6 +435,20 @@ export default function MemberManagement() {
       };
 
       if (editingMember) {
+        // Lấy các bản dịch hiện có của member
+        const response = await fetchMembers(locale, 1, pagination.limit);
+        const currentMember = response.data.find(
+          (m) => m.id === editingMember.id
+        );
+        const existingTranslations = Array.isArray(currentMember?.translations)
+          ? currentMember.translations
+          : [];
+
+        memberData = {
+          ...memberData,
+          translations: existingTranslations, // Giữ lại các bản dịch hiện có
+        };
+
         const updatedMember = await updateMember(
           locale,
           editingMember.id,
@@ -455,29 +469,24 @@ export default function MemberManagement() {
       memberForm.resetFields();
       await loadMembers(pagination.page, pagination.limit);
     } catch (error) {
-      console.error("Error saving member:", error);
-      const errorMessage = error.message;
-      try {
-        const errorData = JSON.parse(errorMessage);
-        if (errorData.statusCode === 401) {
-          handleUnauthorized();
-          return;
-        }
-      } catch (parseError) {
-        console.error("Error parsing error message:", parseError);
+      const { isUnauthorized, message: errorMessage } = handleErrorResponse(
+        error,
+        "Lưu member thất bại"
+      );
+      if (isUnauthorized) {
+        handleUnauthorized();
+      } else {
+        message.error(`Lưu member thất bại: ${errorMessage}`);
       }
-      message.error(`Lưu member thất bại: ${error.message}`);
     } finally {
       setLoading(false);
     }
   };
-
   // Xử lý lưu translation (thêm hoặc cập nhật)
   const handleTranslationModalOk = async () => {
     try {
       const values = await translationForm.validateFields();
-      console.log("Form values on submit:", values);
-
+      console.log("Form values on submit:", values); // Debug giá trị form khi submit
       setTranslationsLoading(true);
 
       const keywordValue = values.keywords;

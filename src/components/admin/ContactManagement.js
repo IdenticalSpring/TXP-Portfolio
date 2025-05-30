@@ -323,13 +323,25 @@ export default function ContactManagement() {
       const values = await contactForm.validateFields();
       setLoading(true);
 
-      const contactData = {
+      let contactData = {
         phone: values.phone,
         mail: values.mail,
         translations: [],
       };
 
       if (editingContact) {
+        // Lấy các bản dịch hiện có của contact
+        const contacts = await fetchAllContacts(locale);
+        const currentContact = contacts.find((c) => c.id === editingContact.id);
+        const existingTranslations = Array.isArray(currentContact?.translations)
+          ? currentContact.translations
+          : [];
+
+        contactData = {
+          ...contactData,
+          translations: existingTranslations, // Giữ lại các bản dịch hiện có
+        };
+
         const updatedContact = await updateContact(
           locale,
           editingContact.id,

@@ -363,18 +363,28 @@ export default function BannerManagement() {
     try {
       const values = await bannerForm.validateFields();
       if (!values.image) {
-        throw new Error("Image path is required");
+        throw new Error("Đường dẫn ảnh là bắt buộc");
       }
 
       setLoading(true);
 
-      const bannerData = {
+      let bannerData = {
         slug: values.slug,
         image: values.image,
         translations: [],
       };
 
       if (editingBanner) {
+        // Lấy các bản dịch hiện có của banner đang chỉnh sửa
+        const existingTranslations = await fetchBannerTranslations(
+          locale,
+          editingBanner.id
+        );
+        bannerData = {
+          ...bannerData,
+          translations: existingTranslations || [], // Giữ lại các bản dịch hiện có
+        };
+
         const updatedBanner = await updateBanner(
           locale,
           editingBanner.id,
@@ -394,7 +404,7 @@ export default function BannerManagement() {
       setIsBannerModalVisible(false);
       bannerForm.resetFields();
     } catch (error) {
-      console.error("Error saving banner:", error);
+      console.error("Lỗi khi lưu banner:", error);
       const errorMessage = error.message;
       try {
         const errorData = JSON.parse(errorMessage);
@@ -403,7 +413,7 @@ export default function BannerManagement() {
           return;
         }
       } catch (parseError) {
-        console.error("Error parsing error message:", parseError);
+        console.error("Lỗi phân tích thông báo lỗi:", parseError);
       }
       message.error(`Lưu banner thất bại: ${error.message}`);
     } finally {
