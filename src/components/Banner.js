@@ -45,7 +45,7 @@ if (isLoading) {
         <Skeleton.Image
           style={{
             width: "100%",
-            height: "100vh",
+            height: "50%",
             minHeight: 600,
             borderRadius: 0,
             background: "#f0f0f0",

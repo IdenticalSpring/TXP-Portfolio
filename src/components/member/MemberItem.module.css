@@ -1,0 +1,39 @@
+.memberBox {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;               
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.memberImage {
+  width: 100%;
+  height: 300px;
+  object-fit: cover;          
+  object-position: top;       
+}
+
+.memberContent {
+  flex: 1;                    
+  padding: 16px;
+}
+
+.memberName {
+  margin: 0 0 8px;
+  font-size: 18px;
+}
+
+.memberDesc {
+  margin: 0;
+  font-size: 14px;
+  color: #555;
+}
+
+.memberFooter {
+  padding: 0 16px 16px;
+  display: flex;
+  justify-content: flex-end;  
+}

@@ -137,7 +137,7 @@ export default function Footer() {
           {/* Cột 3: Recent Blogs */}
           <Col xs={24} sm={12} md={5} lg={5}>
             <div className={styles.footerWidget}>
-              <h3 className={styles.widgetTitle}>{t("coreMemberTitle")}</h3>
+              <h3 className={styles.widgetTitle}>{t("blogSectionTitle")}</h3>
               <ul className={styles.footerLinks}>
                 {isLoading ? (
                   <li>{t("loading")}</li>

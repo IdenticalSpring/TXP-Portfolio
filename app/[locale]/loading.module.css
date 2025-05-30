@@ -1,0 +1,156 @@
+.loadingScreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #1a2980 0%, #26d0ce 100%);
+  color: white;
+  z-index: 9999;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+.loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, rgba(26, 41, 128, 0.95) 0%, rgba(38, 208, 206, 0.95) 100%);
+  color: white;
+  z-index: 9999;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  backdrop-filter: blur(5px);
+}
+
+.container {
+  position: relative;
+}
+.loadingContent {
+  text-align: center;
+  max-width: 600px;
+  padding: 2rem;
+}
+
+.loadingAnimation {
+  margin-bottom: 2rem;
+  position: relative;
+  height: 120px;
+}
+
+/* Circuit animation */
+.circuitAnimation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  margin-bottom: 2rem;
+}
+
+.circuitLine {
+  width: 60px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.7);
+  position: relative;
+}
+
+.circuitNode {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid white;
+  background: #26d0ce;
+  position: relative;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* Binary animation */
+.binaryAnimation {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.binaryDigit {
+  font-family: monospace;
+  font-size: 1.2rem;
+  opacity: 0;
+  animation: binaryFade 1.5s infinite;
+}
+
+@keyframes binaryFade {
+  0% { opacity: 0; transform: translateY(-10px); }
+  50% { opacity: 1; }
+  100% { opacity: 0; transform: translateY(10px); }
+}
+
+.binaryDigit:nth-child(1) { animation-delay: 0.1s; }
+.binaryDigit:nth-child(2) { animation-delay: 0.2s; }
+.binaryDigit:nth-child(3) { animation-delay: 0.3s; }
+.binaryDigit:nth-child(4) { animation-delay: 0.4s; }
+.binaryDigit:nth-child(5) { animation-delay: 0.5s; }
+.binaryDigit:nth-child(6) { animation-delay: 0.6s; }
+.binaryDigit:nth-child(7) { animation-delay: 0.7s; }
+.binaryDigit:nth-child(8) { animation-delay: 0.8s; }
+.binaryDigit:nth-child(9) { animation-delay: 0.9s; }
+.binaryDigit:nth-child(10) { animation-delay: 1.0s; }
+
+/* AI Icon */
+.aiIcon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60px;
+  height: 60px;
+  color: white;
+  animation: rotate 4s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.loadingText {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+}
+
+.progressBar {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  width: 0;
+  background: white;
+  border-radius: 2px;
+  animation: progressFill 3s linear forwards;
+}
+
+@keyframes progressFill {
+  0% { width: 0; }
+  100% { width: 100%; }
+}

@@ -71,7 +71,6 @@
   font-size: var(--text-font-size);
   font-family: var(--font-family);
   color: #666;
-  margin-bottom: 20px;
 }
 
 .learnMoreBtn {
@@ -80,6 +79,7 @@
   font-weight: 500;
   padding: 0;
   height: auto;
+
 }
 
 .learnMoreBtn:hover {

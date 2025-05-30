@@ -87,7 +87,7 @@ export default function MemberDetail() {
               <img
                 src={getImageUrl(member.image)}
                 alt={translation.name}
-                style={{ height: 300, objectFit: "cover" }}
+                style={{ height: 300, objectFit: "contain" }}
                 onError={(e) => {
                   e.target.src = "/images/placeholder.jpg";
                 }}

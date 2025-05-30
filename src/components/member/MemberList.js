@@ -5,6 +5,7 @@ import { Button, Card, Col, Row, Skeleton } from "antd";
 import Link from "next/link";
 import { fetchMembers } from "../../lib/api";
 import styles from "./MemberList.module.css";
+import MemberItem from "./MemberItem";
 
 export default function MemberList({ locale }) {
   const t = useTranslations();
@@ -13,7 +14,7 @@ export default function MemberList({ locale }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const pageSize = 3;
+  const pageSize = 4;
 
   const loadMembers = useCallback(async () => {
     setLoading(true);
@@ -42,10 +43,7 @@ export default function MemberList({ locale }) {
     loadMembers();
   }, [loadMembers]);
 
-  const getImageUrl = (imagePath) => {
-    if (!imagePath) return "/images/placeholder.jpg";
-    return imagePath;
-  };
+ 
 
   const scrollToMemberSection = useCallback(() => {
     const memberSection = document.getElementById("members");
@@ -158,7 +156,6 @@ export default function MemberList({ locale }) {
       member.slug
   );
 
-  // Render member cards
   const renderMemberCards = (memberList) =>
     memberList.map((member) => {
       const translation =
@@ -166,39 +163,12 @@ export default function MemberList({ locale }) {
         member.translations[0];
       if (!translation?.name) return null;
       return (
-        <Col xs={24} sm={12} md={8} key={member.id}>
-          <Card
-             style={{
-              border:         'none',  
-              borderRadius:   '8px',
-              overflow:       'hidden',
-              boxShadow:      '0 4px 12px rgba(0,0,0,0.05)',
-            }}
-            className={styles.memberCard}
-            variant="borderless"
-            cover={
-              member.image && (
-                <img
-                  src={getImageUrl(member.image)}
-                  alt={translation.name}
-                  style={{ height: 200, objectFit: "cover" }}
-                  loading="lazy"
-                  
-                />
-              )
-            }
-          >
-            <h3>{translation.name}</h3>
-            <p>
-              {translation.description?.slice(0, 100) + "..." ||
-                t("noDescription")}
-            </p>
-            <Link href={`/${locale}/member/${member.slug}`}>
-              <Button type="link" className={styles.learnMoreBtn}>
-                {t("readMore") || "Xem thêm"}
-              </Button>
-            </Link>
-          </Card>
+        <Col xs={24} sm={12} md={6} key={member.id} style={{ display: "flex" }}>
+          <MemberItem
+            member={member}
+            translation={translation}
+            locale={locale}
+          />
         </Col>
       );
     });

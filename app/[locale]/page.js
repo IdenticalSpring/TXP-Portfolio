@@ -15,6 +15,8 @@ import { useState, useEffect } from "react";
 import { fetchBanners, incrementStatistics } from "../../src/lib/api";
 import { SLUGS_CONFIG } from "../../src/config/slugs";
 
+
+
 export default function Home() {
   const { locale } = useParams();
   const t = useTranslations();
@@ -116,7 +118,7 @@ export default function Home() {
           <Row gutter={[48, 48]} align="middle">
             <Col xs={24} md={12}>
               <div className={styles.aboutImage}>
-                {isLoading ? (
+                {/* {isLoading ? (
                   <Skeleton.Image
                     style={{
                       width: "100%",
@@ -126,7 +128,7 @@ export default function Home() {
                     }}
                     active
                   />
-                ) : (
+                ) : ( */
                   <img
                     src="/images/about-us.png"
                     alt={t("aboutImageAlt") || "About Us"}
@@ -134,8 +136,9 @@ export default function Home() {
                     onError={(e) => {
                       e.target.src = "/images/fallback-about.jpg";
                     }}
-                  />
-                )}
+                  />}
+                {/* ) */}
+                
               </div>
             </Col>
             <Col xs={24} md={12}>
