@@ -128,7 +128,7 @@ export default function Home() {
                   />
                 ) : (
                   <img
-                    src="/images/about-us.jpg"
+                    src="/images/about-us.png"
                     alt={t("aboutImageAlt") || "About Us"}
                     style={{ width: "100%", height: 400, objectFit: "cover", borderRadius: 8 }}
                     onError={(e) => {

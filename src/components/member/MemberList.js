@@ -168,6 +168,12 @@ export default function MemberList({ locale }) {
       return (
         <Col xs={24} sm={12} md={8} key={member.id}>
           <Card
+             style={{
+              border:         'none',  
+              borderRadius:   '8px',
+              overflow:       'hidden',
+              boxShadow:      '0 4px 12px rgba(0,0,0,0.05)',
+            }}
             className={styles.memberCard}
             variant="borderless"
             cover={
@@ -177,6 +183,7 @@ export default function MemberList({ locale }) {
                   alt={translation.name}
                   style={{ height: 200, objectFit: "cover" }}
                   loading="lazy"
+                  
                 />
               )
             }

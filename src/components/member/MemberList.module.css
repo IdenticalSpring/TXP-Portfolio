@@ -48,7 +48,7 @@
 .memberCard {
   height: 100%;
   text-align: center;
-  padding: 40px 20px;
+  padding: 10px 10px;
   border-radius: 8px;
   transition: all 0.3s;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
